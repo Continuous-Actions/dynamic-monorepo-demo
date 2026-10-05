@@ -16,9 +16,9 @@ Each pull request below changes one thing. Open its **Checks → CI → Summary*
 
 | Pull request | Change | What runs |
 | --- | --- | --- |
-| *shared library* | `libs/shared/index.js` | build: shared, api, web · docker: api |
-| *worker Dockerfile* | `services/worker/Dockerfile` | build + docker: worker |
-| *Go library* | `libs/geo/geo.go` | build: geo, worker · docker: worker |
-| *docs only* | `README.md` | nothing (all jobs skipped) |
+| [#1 shared library](https://github.com/Continuous-Actions/dynamic-monorepo-demo/pull/1/checks) | `libs/shared/index.js` | build: shared, api, web · docker: api |
+| [#2 worker Dockerfile](https://github.com/Continuous-Actions/dynamic-monorepo-demo/pull/2/checks) | `services/worker/Dockerfile` | build + docker: worker |
+| [#3 Go library](https://github.com/Continuous-Actions/dynamic-monorepo-demo/pull/3/checks) | `libs/geo/geo.go` | build: geo, worker · docker: worker |
+| [#4 docs only](https://github.com/Continuous-Actions/dynamic-monorepo-demo/pull/4/checks) | `README.md` | nothing (all jobs skipped) |
 
 Try it yourself: fork this repository, change a file, and open a pull request.
