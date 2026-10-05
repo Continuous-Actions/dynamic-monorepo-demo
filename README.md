@@ -22,3 +22,5 @@ Each pull request below changes one thing. Open its **Checks → CI → Summary*
 | *docs only* | `README.md` | nothing (all jobs skipped) |
 
 Try it yourself: fork this repository, change a file, and open a pull request.
+
+_Docs-only change: nothing should build._
