@@ -1,0 +1,55 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      build: ${{ steps.plan.outputs.build }}
+      docker: ${{ steps.plan.outputs.docker }}
+      paths: ${{ steps.plan.outputs.paths }}
+      dockerfiles: ${{ steps.plan.outputs.dockerfiles }}
+      has_build: ${{ steps.plan.outputs.has_build }}
+      has_docker: ${{ steps.plan.outputs.has_docker }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Continuous-Actions/dynamic-monorepo@v1
+        id: plan
+
+  build:
+    name: ${{ matrix.project }} / build
+    needs: plan
+    if: needs.plan.outputs.has_build == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: ${{ fromJSON(needs.plan.outputs.build) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        working-directory: ${{ fromJSON(needs.plan.outputs.paths)[matrix.project] }}
+        run: ls -la && echo "building ${{ matrix.project }}"
+
+  docker:
+    name: ${{ matrix.project }} / docker
+    needs: plan
+    if: needs.plan.outputs.has_docker == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: ${{ fromJSON(needs.plan.outputs.docker) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        env:
+          DIR: ${{ fromJSON(needs.plan.outputs.paths)[matrix.project] }}
+          FILE: ${{ fromJSON(needs.plan.outputs.dockerfiles)[matrix.project] }}
+        run: docker build -f "$FILE" "$DIR"
